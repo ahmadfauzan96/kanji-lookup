@@ -1,0 +1,21 @@
+.content {
+  display: flex;
+  height: 500vh;
+  width: 100%;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 20px;
+}
+
+.search {
+  justify-content: center;
+  width: 90%;
+}
+
+.search p {
+  text-align: center;
+}
+
+.search ruby {
+  ruby-align: space-around;
+}
