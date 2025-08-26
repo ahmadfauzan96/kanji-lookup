@@ -10,6 +10,11 @@ import {
   getGrade6Kanji,
   getHeisigKanji,
   getJinmeiyouKanji,
+  getJLPT1Kanji,
+  getJLPT2Kanji,
+  getJLPT3Kanji,
+  getJLPT4Kanji,
+  getJLPT5Kanji,
   getJouyouKanji,
   getSecondarySchoolKanji,
 } from "@/lib/kanji-list";
@@ -29,13 +34,32 @@ export default async function Header() {
   const grade6Kanji = await getGrade6Kanji();
   const secondarySchoolKanji = await getSecondarySchoolKanji();
   const heisigKanji = await getHeisigKanji();
+  const jlpt5Kanji = await getJLPT5Kanji();
+  const jlpt4Kanji = await getJLPT4Kanji();
+  const jlpt3Kanji = await getJLPT3Kanji();
+  const jlpt2Kanji = await getJLPT2Kanji();
+  const jlpt1Kanji = await getJLPT1Kanji();
+  const totalJLPTKanji = [
+    jlpt5Kanji.length,
+    jlpt4Kanji.length,
+    jlpt3Kanji.length,
+    jlpt2Kanji.length,
+    jlpt1Kanji.length,
+  ].reduce((acc, curr) => acc + curr, 0);
+  const currentYear = new Date().getFullYear();
 
   return (
     <header className={styles.header}>
       <div className="card">
         <div className="card-body">
           <h1>
-            Kanji Lookup – <span lang="ja">漢字をご検索しましょう！</span>
+            Kanji Lookup –{" "}
+            <span lang="ja">
+              <Ruby kanji="漢字" furigana="かんじ" />
+              をご
+              <Ruby kanji="検索" furigana="けんさく" />
+              しましょう！
+            </span>
           </h1>
           <p>
             Browse through all of our {allKanji.length} kanji{allKanji.length !== 1 ? "s" : ""} and
@@ -58,12 +82,22 @@ export default async function Header() {
               Remembering the Kanji
             </a>{" "}
             by <a href="https://en.wikipedia.org/wiki/James_Heisig">James Heisig</a>, each has their
-            own unique keyword.
+            own unique Heisig keyword.
+          </p>
+          <p>
+            On the other hand, JLPT (Japanese Language Proficiency Test,{" "}
+            <Ruby kanji="日本語能力試験" furigana="にほんごのうりょくしけん" />) is a standardized
+            test to evaluate and certify the Japanese language proficiency of non-native speakers.
+            Before 2010, the JLPT has 4 levels, from JLPT 4 (beginner) up to JLPT 1 (advanced). It
+            was reformed in 2010, and now in {currentYear} it has 5 levels, from N5 (beginner) up to
+            N1 (advanced). There are {totalJLPTKanji} 漢字 required to pass the JLPT. Among them,{" "}
+            {jlpt5Kanji.length} are for N5, {jlpt4Kanji.length} for N4, {jlpt3Kanji.length} for N3,{" "}
+            {jlpt2Kanji.length} for N2, and {jlpt1Kanji.length} for N1.
           </p>
           <p>
             Enter a <strong>single</strong> kanji to obtain its informations or words associated
             with that kanji. Use <em>hiragana</em> for kun-yomi searching and <em>katakana</em> for
-            on-yomi searching. It may take a while for result to be displayed properly.
+            on-yomi searching. It may take a while for the results to be displayed properly.
           </p>
         </div>
       </div>
