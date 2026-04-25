@@ -6,18 +6,24 @@ export default function Footer() {
     return currentYear > createdYear
       ? createdYear + "-" + currentYear
       : currentYear === createdYear
-      ? currentYear.toString()
-      : "Not created yet.";
+        ? currentYear.toString()
+        : "Not created yet.";
   }
 
   return (
     <footer className={styles.footer}>
       <p>
-        Created with ❤️ by <a href="https://github.com/ahmadfauzan96">Ahmad Fauzan Bagaskoro</a> ©{" "}
-        {copyrightYear(2024)}
+        Created with ❤️ and ☮️ by{" "}
+        <a href="https://github.com/ahmadfauzan96" target="_blank">
+          Ahmad Fauzan Bagaskoro
+        </a>{" "}
+        © {copyrightYear(2024)}
       </p>
       <p>
-        Kanji API provided by <a href="https://kanjiapi.dev/">kanjiapi.dev</a>
+        Kanji API is provided by{" "}
+        <a href="https://kanjiapi.dev/" target="_blank">
+          kanjiapi.dev
+        </a>
       </p>
     </footer>
   );

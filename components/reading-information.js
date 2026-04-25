@@ -13,7 +13,7 @@ export default function ReadingInformation({ readingInformation }) {
         Kanji{totalKanji > 1 ? "s" : ""} with <span lang="ja">{reading}</span> Reading{" "}
         <span lang="ja">「{totalKanji}字」</span>
       </p>
-      <ul className="list-group list-group-flush">
+      <ul className="card-body list-group list-group-flush">
         <li className="list-group-item">
           As Main Reading :{" "}
           {mainKanjiLength > 0 ? (

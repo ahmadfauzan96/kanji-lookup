@@ -26,7 +26,7 @@ export default function KanjiInformation({ kanjiInformation }) {
       <p className="card-header">
         Kanji Informations for <span lang="ja">{kanji}</span>
       </p>
-      <ul className="list-group list-group-flush">
+      <ul className="card-body list-group list-group-flush">
         <li className="list-group-item">
           Kun-yomi (
           <span lang="ja">
@@ -73,8 +73,8 @@ export default function KanjiInformation({ kanjiInformation }) {
               (grade === 8
                 ? "Jōyō Kanji (常用漢字, taught in Secondary School)"
                 : grade === 9
-                ? "Jinmeiyō Kanji (人名用漢字)"
-                : "No data")}
+                  ? "Jinmeiyō Kanji (人名用漢字)"
+                  : "No data")}
         </li>
         <li className="list-group-item">
           Meaning{meanings.length > 1 ? "s" : ""} in English :{" "}
@@ -97,11 +97,20 @@ export default function KanjiInformation({ kanjiInformation }) {
         </li>
         <li className="list-group-item">Unicode Code Point : U+{unicode}</li>
         <li className="list-group-item">
-          Frequenc{mainichiShinbunFrequency > 1 ? "ies" : "y"} in{" "}
-          <a href="https://www.mainichi.co.jp/" lang="ja">
-            <Ruby kanji="毎日新聞" furigana="まいにちしんぶん" />
-          </a>{" "}
-          : {mainichiShinbunFrequency ?? "No data"}
+          Mainichi Shinbun (<Ruby kanji="毎日新聞" furigana="まいにちしんぶん" />) Frequency Rank :{" "}
+          {mainichiShinbunFrequency ?? "No data"}
+          <ul className="list-group">
+            <li className="list-group-item">
+              From the API doc : “A relative frequency ranking from an analysis of Mainichi Shinbun
+              newspaper articles. The 2,501 most-used characters received a ranking.” Kanji of rank
+              1 is the most frequent, while one of rank 2,501 is the least frequent. If a kanji is
+              not ranked, it means that it is not among the 2,501 most-used characters in the{" "}
+              <a href="http://www.mainichi.co.jp/" target="_blank" lang="ja">
+                毎日新聞
+              </a>{" "}
+              newspaper articles.
+            </li>
+          </ul>
         </li>
         <li className="list-group-item">
           Note

@@ -39,7 +39,9 @@ export default function WordsInformation({ kanji, wordsInformation }) {
           />
         </div>
       ) : (
-        <p className="card-body">Sorry, there are no words associated with this kanji.</p>
+        <p className="card-body">
+          Sorry, there are no words associated with <span lang="ja">{kanji}</span>.
+        </p>
       )}
     </section>
   );
