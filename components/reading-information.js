@@ -13,38 +13,40 @@ export default function ReadingInformation({ readingInformation }) {
         Kanji{totalKanji > 1 ? "s" : ""} with <span lang="ja">{reading}</span> Reading{" "}
         <span lang="ja">「{totalKanji}字」</span>
       </p>
-      <ul className="card-body list-group list-group-flush">
-        <li className="list-group-item">
-          As Main Reading :{" "}
-          {mainKanjiLength > 0 ? (
-            <>
-              {mainKanji.map(kanji => (
-                <span key={kanji} lang="ja">
-                  {kanji + addCommaJA(mainKanji, kanji)}
-                </span>
-              ))}
-              <span lang="ja">「{mainKanjiLength}字」</span>
-            </>
-          ) : (
-            "None"
-          )}
-        </li>
-        <li className="list-group-item">
-          As Name Reading :{" "}
-          {nameKanjiLength > 0 ? (
-            <>
-              {nameKanji.map(kanji => (
-                <span key={kanji} lang="ja">
-                  {kanji + addCommaJA(nameKanji, kanji)}
-                </span>
-              ))}
-              <span lang="ja">「{nameKanjiLength}字」</span>
-            </>
-          ) : (
-            "None"
-          )}
-        </li>
-      </ul>
+      <div className="card-body">
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item">
+            As Main Reading :{" "}
+            {mainKanjiLength > 0 ? (
+              <>
+                {mainKanji.map(kanji => (
+                  <span key={kanji} lang="ja">
+                    {kanji + addCommaJA(mainKanji, kanji)}
+                  </span>
+                ))}
+                <span lang="ja">「{mainKanjiLength}字」</span>
+              </>
+            ) : (
+              "None"
+            )}
+          </li>
+          <li className="list-group-item">
+            As Name Reading :{" "}
+            {nameKanjiLength > 0 ? (
+              <>
+                {nameKanji.map(kanji => (
+                  <span key={kanji} lang="ja">
+                    {kanji + addCommaJA(nameKanji, kanji)}
+                  </span>
+                ))}
+                <span lang="ja">「{nameKanjiLength}字」</span>
+              </>
+            ) : (
+              "None"
+            )}
+          </li>
+        </ul>
+      </div>
     </section>
   );
 }

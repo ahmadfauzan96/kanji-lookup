@@ -22,27 +22,21 @@ export default function WordsInformation({ kanji, wordsInformation }) {
         Word{totalInfo > 1 ? "s" : ""} associated with <span lang="ja">{kanji}</span> ({totalInfo}{" "}
         entr{totalInfo > 1 ? "ies" : "y"})
       </p>
-      {totalInfo > 0 ? (
-        <div className="card-body">
-          <Navbar
-            activePage={activePage}
-            activePageGroup={activePageGroup}
-            paginate={paginate}
-            setActivePage={setActivePage}
-            totalInfo={totalInfo}
-            wordsInformation={wordsInformation}
-          />
-          <WordInformation
-            activePage={activePage}
-            paginate={paginate}
-            wordsInformation={wordsInformation}
-          />
-        </div>
-      ) : (
-        <p className="card-body">
-          Sorry, there are no words associated with <span lang="ja">{kanji}</span>.
-        </p>
-      )}
+      <div className="card-body">
+        <Navbar
+          activePage={activePage}
+          activePageGroup={activePageGroup}
+          paginate={paginate}
+          setActivePage={setActivePage}
+          totalInfo={totalInfo}
+          list={wordsInformation}
+        />
+        <WordInformation
+          activePage={activePage}
+          paginate={paginate}
+          wordsInformation={wordsInformation}
+        />
+      </div>
     </section>
   );
 }

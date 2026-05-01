@@ -7,8 +7,8 @@ export default function WordInformation({ activePage, paginate, wordsInformation
     <ul className="list-group list-group-flush">
       {paginate(
         wordsInformation.map(({ meanings, variants }, index) => (
-          <li className="list-group-item flex-lg-row" key={index}>
-            <ul className="list-group list-group-horizontal-lg justify-content-center">
+          <li className="list-group-item" key={index}>
+            <ul className="list-group list-group-horizontal-lg d-flex justify-content-center flex-wrap">
               {variants
                 // TODO : Sort variants with the most priorities first
                 .sort((a, b) => b.priorities.length - a.priorities.length)
@@ -32,8 +32,9 @@ export default function WordInformation({ activePage, paginate, wordsInformation
                   </li>
                 ))}
             </ul>
-            <hr />
-            <ul className="list-group list-group-horizontal-lg justify-content-center">
+            <br />
+            <br />
+            <ul className="list-group list-group-horizontal-lg d-flex justify-content-center flex-wrap">
               {meanings
                 .sort((a, b) => {
                   // TODO : Sort alphabetically according to the first glossary in the list
@@ -52,7 +53,7 @@ export default function WordInformation({ activePage, paginate, wordsInformation
           </li>
         )),
         1,
-        activePage
+        activePage,
       )}
     </ul>
   );

@@ -10,11 +10,11 @@ import {
   getGrade6Kanji,
   getHeisigKanji,
   getJinmeiyouKanji,
-  getJLPT1Kanji,
-  getJLPT2Kanji,
-  getJLPT3Kanji,
-  getJLPT4Kanji,
-  getJLPT5Kanji,
+  getJLPTN1Kanji,
+  getJLPTN2Kanji,
+  getJLPTN3Kanji,
+  getJLPTN4Kanji,
+  getJLPTN5Kanji,
   getJouyouKanji,
   getSecondarySchoolKanji,
 } from "@/lib/kanji-list";
@@ -34,17 +34,17 @@ export default async function Header() {
   const grade6Kanji = await getGrade6Kanji();
   const secondarySchoolKanji = await getSecondarySchoolKanji();
   const heisigKanji = await getHeisigKanji();
-  const jlpt5Kanji = await getJLPT5Kanji();
-  const jlpt4Kanji = await getJLPT4Kanji();
-  const jlpt3Kanji = await getJLPT3Kanji();
-  const jlpt2Kanji = await getJLPT2Kanji();
-  const jlpt1Kanji = await getJLPT1Kanji();
+  const jlptN5Kanji = await getJLPTN5Kanji();
+  const jlptN4Kanji = await getJLPTN4Kanji();
+  const jlptN3Kanji = await getJLPTN3Kanji();
+  const jlptN2Kanji = await getJLPTN2Kanji();
+  const jlptN1Kanji = await getJLPTN1Kanji();
   const totalJLPTKanji = [
-    jlpt5Kanji.length,
-    jlpt4Kanji.length,
-    jlpt3Kanji.length,
-    jlpt2Kanji.length,
-    jlpt1Kanji.length,
+    jlptN5Kanji.length,
+    jlptN4Kanji.length,
+    jlptN3Kanji.length,
+    jlptN2Kanji.length,
+    jlptN1Kanji.length,
   ].reduce((acc, curr) => acc + curr, 0);
   const currentYear = new Date().getFullYear();
 
@@ -77,7 +77,8 @@ export default async function Header() {
             5, and {grade6Kanji.length} Grade 6 漢字. The grade indicates year of primary school in
             Japan. The remaining {secondarySchoolKanji.length - 4} 常用漢字 are taught in secondary
             school (4 漢字 have double Unicode code points due to historical reasons, both are
-            provided in this app). {heisigKanji.length} 漢字 are registered in{" "}
+            provided in this app). {heisigKanji.length - 4} 漢字 (in addition to the 4 漢字 that
+            have double Unicode code points) are registered in{" "}
             <a href="https://en.wikipedia.org/wiki/Remembering_the_Kanji_and_Remembering_the_Hanzi">
               Remembering the Kanji
             </a>{" "}
@@ -91,8 +92,8 @@ export default async function Header() {
             Before 2010, the JLPT has 4 levels, from JLPT 4 (beginner) up to JLPT 1 (advanced). It
             was reformed in 2010, and now in {currentYear} it has 5 levels, from N5 (beginner) up to
             N1 (advanced). There are {totalJLPTKanji} 漢字 required to pass the JLPT. Among them,{" "}
-            {jlpt5Kanji.length} are for N5, {jlpt4Kanji.length} for N4, {jlpt3Kanji.length} for N3,{" "}
-            {jlpt2Kanji.length} for N2, and {jlpt1Kanji.length} for N1.
+            {jlptN5Kanji.length} are for N5, {jlptN4Kanji.length} for N4, {jlptN3Kanji.length} for
+            N3, {jlptN2Kanji.length} for N2, and {jlptN1Kanji.length} for N1.
           </p>
           <p>
             Enter a <strong>single</strong> kanji to obtain its informations or words associated

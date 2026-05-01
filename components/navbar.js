@@ -6,7 +6,7 @@ export default function Navbar({
   paginate,
   setActivePage,
   totalInfo,
-  wordsInformation,
+  list,
 }) {
   const fastBackward = activePage - activePageGroup;
   // * If the fast backward page is below 1, set it to 1
@@ -40,7 +40,7 @@ export default function Navbar({
           </button>
         </li>
         {paginate(
-          wordsInformation.map((_, index) => {
+          list.map((_, index) => {
             const pageNumber = index + 1;
             const pageIsActive = pageNumber === activePage;
             return (
@@ -56,7 +56,7 @@ export default function Navbar({
             );
           }),
           activePageGroup,
-          Math.ceil(activePage / activePageGroup)
+          Math.ceil(activePage / activePageGroup),
         )}
         <li className={"page-item" + disabledFastForwardButtonClass}>
           <button className="page-link" lang="ja" onClick={() => setActivePage(activePage + 1)}>

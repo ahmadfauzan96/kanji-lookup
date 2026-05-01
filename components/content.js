@@ -24,32 +24,36 @@ export default function Content() {
   const [userHasInputtedKanjiToGetWords, setUserHasInputtedKanjiToGetWords] = useState(false);
   const [userHasInputtedKana, setUserHasInputtedKana] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [entryInfo, setEntryInfo] = useState({ kanji: {}, words: undefined, reading: {} });
+  const [entryInfo, setEntryInfo] = useState({
+    kanji: "",
+    kanjiInfo: {},
+    wordsInfo: {},
+    readingInfo: {},
+  });
 
   const matches = useMediaQuery("(min-width:932px)");
 
   const noSuchEndpointNotice = "No such endpoint, see https://kanjiapi.dev/#!/documentation";
 
-  const kanjiInfoHasEntries = Object.values(entryInfo.kanji).length !== 0;
+  // * Kanji Information
+  const kanjiInfoKeys = Object.keys(entryInfo.kanjiInfo);
+  const kanjiInfoValues = Object.values(entryInfo.kanjiInfo);
+  const kanjiInfoHasEntries =
+    kanjiInfoValues.length !== 0 &&
+    kanjiInfoKeys.includes("kanji") &&
+    kanjiInfoKeys.includes("jlpt") &&
+    kanjiInfoKeys.includes("grade") &&
+    kanjiInfoKeys.includes("meanings") &&
+    kanjiInfoKeys.includes("unicode") &&
+    kanjiInfoKeys.includes("notes") &&
+    kanjiInfoKeys.includes("kun_readings") &&
+    kanjiInfoKeys.includes("on_readings") &&
+    kanjiInfoKeys.includes("name_readings") &&
+    kanjiInfoKeys.includes("heisig_en") &&
+    kanjiInfoKeys.includes("stroke_count") &&
+    kanjiInfoKeys.includes("freq_mainichi_shinbun");
   const kanjiInfoHasError =
-    Object.keys(entryInfo.kanji).includes("error") ||
-    Object.values(entryInfo.kanji).includes(noSuchEndpointNotice);
-
-  const wordsInfoHasEntries =
-    typeof entryInfo.words === "object" &&
-    Object.values(entryInfo.words).every(
-      word => Object.keys(word).includes("meanings") && Object.keys(word).includes("variants"),
-    );
-  const wordsInfoHasError =
-    typeof entryInfo.words === "object" &&
-    (Object.keys(entryInfo.words).includes("error") ||
-      Object.values(entryInfo.words).includes(noSuchEndpointNotice));
-
-  const readingInfoHasEntries = Object.values(entryInfo.reading).length !== 0;
-  const readingInfoHasError =
-    Object.keys(entryInfo.reading).includes("error") ||
-    Object.values(entryInfo.reading).includes(noSuchEndpointNotice);
-
+    kanjiInfoKeys.includes("error") || kanjiInfoValues.includes(noSuchEndpointNotice);
   async function getKanjiInfo(kanji) {
     setUserHasInputtedKanjiToGetInfo(false);
     setUserHasInputtedKanjiToGetWords(false);
@@ -59,18 +63,31 @@ export default function Content() {
       const kanjiInformation = await getKanjiInformation(kanji);
       setEntryInfo(prevInfo => {
         const newInfo = { ...prevInfo };
-        newInfo.kanji = kanjiInformation;
-        newInfo.words = undefined;
-        newInfo.reading = {};
+        newInfo.kanji = kanjiInformation.kanji ?? "";
+        newInfo.kanjiInfo = kanjiInformation ?? {};
+        newInfo.wordsInfo = {};
+        newInfo.readingInfo = {};
         return newInfo;
       });
-      setIsLoading(false);
     } catch (error) {
-      throw new Error(error.message || "Could not retrieve information for this kanji.");
+      throw new Error(error.message || "Could not retrieve informations for this kanji.");
     }
+    setIsLoading(false);
     setUserHasInputtedKanjiToGetInfo(true);
   }
 
+  // * Words Information
+  const wordsInfoKeys = Object.keys(entryInfo.wordsInfo);
+  const wordsInfoValues = Object.values(entryInfo.wordsInfo);
+  const wordsInfoHasEntries =
+    wordsInfoValues.length !== 0 &&
+    wordsInfoValues.every(
+      // * .every() can be used to make sure that all the entries in the array have the required keys, not just some of them
+      // ! will return true if the array is empty, so it must be used together with the check for array length
+      word => Object.keys(word).includes("meanings") && Object.keys(word).includes("variants"),
+    );
+  const wordsInfoHasError =
+    wordsInfoKeys.includes("error") || wordsInfoValues.includes(noSuchEndpointNotice);
   async function getWordsInfo(kanji) {
     setUserHasInputtedKanjiToGetInfo(false);
     setUserHasInputtedKanjiToGetWords(false);
@@ -81,18 +98,29 @@ export default function Content() {
       const wordsInformation = await getWordsAssociatedWithKanji(kanji);
       setEntryInfo(prevInfo => {
         const newInfo = { ...prevInfo };
-        newInfo.kanji = kanjiInformation;
-        newInfo.words = wordsInformation;
-        newInfo.reading = {};
+        newInfo.kanji = kanjiInformation.kanji ?? "";
+        newInfo.kanjiInfo = {};
+        newInfo.wordsInfo = wordsInformation ?? {};
+        newInfo.readingInfo = {};
         return newInfo;
       });
-      setIsLoading(false);
     } catch (error) {
       throw new Error(error.message || "Could not retrieve words for this kanji.");
     }
+    setIsLoading(false);
     setUserHasInputtedKanjiToGetWords(true);
   }
 
+  // * Reading Information
+  const readingInfoKeys = Object.keys(entryInfo.readingInfo);
+  const readingInfoValues = Object.values(entryInfo.readingInfo);
+  const readingInfoHasEntries =
+    readingInfoValues.length !== 0 &&
+    readingInfoKeys.includes("main_kanji") &&
+    readingInfoKeys.includes("name_kanji") &&
+    readingInfoKeys.includes("reading");
+  const readingInfoHasError =
+    readingInfoKeys.includes("error") || readingInfoValues.includes(noSuchEndpointNotice);
   async function getReadingInfo(reading) {
     setUserHasInputtedKanjiToGetInfo(false);
     setUserHasInputtedKanjiToGetWords(false);
@@ -102,15 +130,16 @@ export default function Content() {
       const readingInformation = await getKanjiWithReading(reading);
       setEntryInfo(prevInfo => {
         const newInfo = { ...prevInfo };
-        newInfo.kanji = {};
-        newInfo.words = undefined;
-        newInfo.reading = readingInformation;
+        newInfo.kanji = "";
+        newInfo.kanjiInfo = {};
+        newInfo.wordsInfo = {};
+        newInfo.readingInfo = readingInformation ?? {};
         return newInfo;
       });
-      setIsLoading(false);
     } catch (error) {
-      throw new Error(error.message || "Could not retrieve kanji for this reading.");
+      throw new Error(error.message || "Could not retrieve kanjis for this reading.");
     }
+    setIsLoading(false);
     setUserHasInputtedKana(true);
   }
 
@@ -119,6 +148,7 @@ export default function Content() {
       <div className={styles.search}>
         <TextField
           id="filled-basic"
+          type="text"
           // ref={enteredTextRef}
           value={enteredText}
           onChange={e => setEnteredText(e.target.value)}
@@ -151,28 +181,33 @@ export default function Content() {
           </Button>
         </ButtonGroup>
         {isLoading && <SingleLineCard>Fetching data. Please wait...</SingleLineCard>}
-        {entryInfo.kanji && kanjiInfoHasEntries && !kanjiInfoHasError && !entryInfo.words ? (
-          <KanjiInformation kanjiInformation={entryInfo.kanji} />
+        {!isLoading && kanjiInfoHasEntries && !kanjiInfoHasError ? (
+          <KanjiInformation kanjiInformation={entryInfo.kanjiInfo} />
         ) : (
           userHasInputtedKanjiToGetInfo && (
             <SingleLineCard>
-              Sorry, there is no information available for this kanji. Please make sure you enter a
+              Sorry, there is no information available for this entry. Please make sure you enter a
               kanji (<em>not</em> kun-yomi or on-yomi) to obtain proper result.
             </SingleLineCard>
           )
         )}
-        {entryInfo.words && wordsInfoHasEntries && !wordsInfoHasError && entryInfo.kanji ? (
-          <WordsInformation kanji={entryInfo.kanji.kanji} wordsInformation={entryInfo.words} />
+        {!isLoading && wordsInfoHasEntries && !wordsInfoHasError ? (
+          <WordsInformation kanji={entryInfo.kanji} wordsInformation={entryInfo.wordsInfo} />
         ) : (
-          userHasInputtedKanjiToGetWords && (
+          userHasInputtedKanjiToGetWords &&
+          (entryInfo.kanji !== "" ? (
             <SingleLineCard>
-              Sorry, there are no words for this kanji. Please make sure you enter a kanji (
+              Sorry, there are no words associated with <span lang="ja">{entryInfo.kanji}</span>.
+            </SingleLineCard>
+          ) : (
+            <SingleLineCard>
+              Sorry, there are no words for this entry. Please make sure you enter a kanji (
               <em>not</em> kun-yomi or on-yomi) to obtain proper result.
             </SingleLineCard>
-          )
+          ))
         )}
-        {entryInfo.reading && readingInfoHasEntries && !readingInfoHasError ? (
-          <ReadingInformation readingInformation={entryInfo.reading} />
+        {!isLoading && readingInfoHasEntries && !readingInfoHasError ? (
+          <ReadingInformation readingInformation={entryInfo.readingInfo} />
         ) : (
           userHasInputtedKana && (
             <SingleLineCard>
