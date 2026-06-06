@@ -1,20 +1,30 @@
 .footer {
   text-align: center;
-  margin: 5rem 20px;
+  margin-block: 5rem;
+  margin-inline: 20px;
 }
 
 .footer p {
   margin: 0;
   font-size: 1.25rem;
   color: #e5d99d;
+  @supports (color: oklch(0% 0 0)) {
+    color: oklch(88.08% 0.07847 98.196);
+  }
 }
 
 .footer a {
   font-weight: 500;
   color: #ba9914;
+  @supports (color: oklch(0% 0 0)) {
+    color: oklch(69.322% 0.13769 92.819);
+  }
   text-decoration: inherit;
 }
 
 .footer a:hover {
   color: #ab8b09;
+  @supports (color: oklch(0% 0 0)) {
+    color: oklch(64.797% 0.13064 92.151);
+  }
 }
