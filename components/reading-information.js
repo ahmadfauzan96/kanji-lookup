@@ -1,6 +1,9 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { addCommaJA } from "@/lib/formatter";
 
+/**
+ * @param {{readingInformation: import("@/lib/kanji").ReadingInformation}} props
+ */
 export default function ReadingInformation({ readingInformation }) {
   const { reading, "main_kanji": mainKanji, "name_kanji": nameKanji } = readingInformation;
   const mainKanjiLength = mainKanji.length;

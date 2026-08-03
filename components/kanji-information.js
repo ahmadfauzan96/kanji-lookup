@@ -3,6 +3,9 @@ import { addCommaEN, addCommaJA } from "@/lib/formatter";
 import { theJISX0208KanjiVariant } from "@/lib/the-missing-4-kanji";
 import Ruby from "./ruby";
 
+/**
+ * @param {{kanjiInformation: import("@/lib/kanji").KanjiInformation} props
+ */
 export default function KanjiInformation({ kanjiInformation }) {
   const {
     kanji,
@@ -19,7 +22,7 @@ export default function KanjiInformation({ kanjiInformation }) {
     "freq_mainichi_shinbun": mainichiShinbunFrequencyRank,
     "unihan_cjk_compatibility_variant": unihanCJKUnifiedVariant,
   } = kanjiInformation;
-  const kanjiIsOfficialVariantAndMissingFromJISX0208 = heisig && heisig.includes("[alt]");
+  const kanjiIsOfficialVariantAndMissingFromJISX0208 = heisig !== null && heisig.includes("[alt]");
 
   return (
     <section className="card">
@@ -66,9 +69,11 @@ export default function KanjiInformation({ kanjiInformation }) {
                 ))
               : "None"}
           </li>
-          <li className="list-group-item">New JLPT Level : {jlpt ? "N" + jlpt : "No data"}</li>
           <li className="list-group-item">
-            {grade >= 1 && grade <= 6
+            New JLPT Level : {jlpt !== null ? "N" + jlpt : "No data"}
+          </li>
+          <li className="list-group-item">
+            {grade !== null && grade >= 1 && grade <= 6
               ? "Primary School Grade : " + grade
               : "Kanji Type : " +
                 (grade === 8
@@ -87,7 +92,7 @@ export default function KanjiInformation({ kanjiInformation }) {
           </li>
           <li className="list-group-item">
             Heisig Keyword :{" "}
-            {heisig
+            {heisig !== null
               ? kanjiIsOfficialVariantAndMissingFromJISX0208
                 ? heisig.slice(0, heisig.length - 6)
                 : heisig
@@ -105,7 +110,7 @@ export default function KanjiInformation({ kanjiInformation }) {
           <li className="list-group-item">
             Mainichi Shinbun (<Ruby kanji="毎日新聞" furigana="まいにちしんぶん" />) Frequency Rank
             :{" "}
-            {mainichiShinbunFrequencyRank
+            {mainichiShinbunFrequencyRank !== null
               ? mainichiShinbunFrequencyRank.toLocaleString("ja-JP")
               : "No data"}
             <ul className="list-group">

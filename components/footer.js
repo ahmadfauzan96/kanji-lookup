@@ -1,6 +1,10 @@
 import styles from "./footer.module.css";
 
 export default function Footer() {
+  /**
+   * @param {number} createdYear - The year the copyright was created.
+   * @return {string} The copyright year range, or the copyright year if the project is newly made.
+   */
   function copyrightYear(createdYear) {
     const currentYear = new Date().getFullYear();
     return currentYear > createdYear

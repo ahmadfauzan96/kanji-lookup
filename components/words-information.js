@@ -1,20 +1,15 @@
 "use client";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import Navbar from "./navbar";
 import WordInformation from "./word-information";
 
+/**
+ * @param {{kanji: string, wordsInformation: import("@/lib/kanji").WordsInformation}} props
+ */
 export default function WordsInformation({ kanji, wordsInformation }) {
   const [activePage, setActivePage] = useState(1);
-  const matches = useMediaQuery("(min-width:932px)");
-  const totalInfo = wordsInformation.length;
-  const activePageGroup = matches ? 5 : 3;
-
-  function paginate(array, pageSize, pageNumber) {
-    // * human-readable page numbers usually start with 1, so we reduce 1 in the first argument
-    return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
-  }
+  const totalInfo = Array.isArray(wordsInformation) ? wordsInformation.length : 0;
 
   return (
     <section className="card">
@@ -23,19 +18,17 @@ export default function WordsInformation({ kanji, wordsInformation }) {
         entr{totalInfo > 1 ? "ies" : "y"})
       </p>
       <div className="card-body">
-        <Navbar
-          activePage={activePage}
-          activePageGroup={activePageGroup}
-          paginate={paginate}
-          setActivePage={setActivePage}
-          totalInfo={totalInfo}
-          list={wordsInformation}
-        />
-        <WordInformation
-          activePage={activePage}
-          paginate={paginate}
-          wordsInformation={wordsInformation}
-        />
+        {Array.isArray(wordsInformation) ? (
+          <Navbar
+            activePage={activePage}
+            setActivePage={setActivePage}
+            totalInfo={totalInfo}
+            list={wordsInformation}
+          />
+        ) : (
+          <></>
+        )}
+        <WordInformation activePage={activePage} wordsInformation={wordsInformation} />
       </div>
     </section>
   );

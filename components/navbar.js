@@ -1,13 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import paginate from "@/lib/paginater";
 
-export default function Navbar({
-  activePage,
-  activePageGroup,
-  paginate,
-  setActivePage,
-  totalInfo,
-  list,
-}) {
+/**
+ * @param {{activePage: number, setActivePage: Dispatch<SetStateAction<number>>, totalInfo: number, list: T[]}} props
+ * @template T
+ */
+export default function Navbar({ activePage, setActivePage, totalInfo, list }) {
+  const matches = useMediaQuery("(min-width:932px)");
+  const activePageGroup = matches ? 5 : 3;
+
   const fastBackward = activePage - activePageGroup;
   // * If the fast backward page is below 1, set it to 1
   const fastBackwardPage = activePage !== 1 ? (fastBackward > 1 ? fastBackward : 1) : 1;

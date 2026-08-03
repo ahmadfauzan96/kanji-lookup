@@ -24,6 +24,14 @@ export default function Content() {
   const [userHasInputtedKanjiToGetWords, setUserHasInputtedKanjiToGetWords] = useState(false);
   const [userHasInputtedKana, setUserHasInputtedKana] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  /**
+   * @typedef {Object} EntryInfo
+   * @property {string} kanji - The kanji character.
+   * @property {import("@/lib/kanji").KanjiInformation} kanjiInfo - The information about the kanji character.
+   * @property {import("@/lib/kanji").WordsInformation} wordsInfo - The information about the words associated with the kanji character.
+   * @property {import("@/lib/kanji").ReadingInformation} readingInfo - The information about the kanji characters associated with the reading.
+   */
+  /** @type {[EntryInfo, React.Dispatch<React.SetStateAction<EntryInfo>>]} */
   const [entryInfo, setEntryInfo] = useState({
     kanji: "",
     kanjiInfo: {},
@@ -54,6 +62,10 @@ export default function Content() {
     kanjiInfoKeys.includes("freq_mainichi_shinbun");
   const kanjiInfoHasError =
     kanjiInfoKeys.includes("error") || kanjiInfoValues.includes(noSuchEndpointNotice);
+  /**
+   * Fetches information about a specific kanji character.
+   * @param {string} kanji - The kanji character to fetch kanji information for.
+   */
   async function getKanjiInfo(kanji) {
     setUserHasInputtedKanjiToGetInfo(false);
     setUserHasInputtedKanjiToGetWords(false);
@@ -88,6 +100,10 @@ export default function Content() {
     );
   const wordsInfoHasError =
     wordsInfoKeys.includes("error") || wordsInfoValues.includes(noSuchEndpointNotice);
+  /**
+   * Fetches words associated with a specific kanji character.
+   * @param {string} kanji - The kanji character to fetch word information for.
+   */
   async function getWordsInfo(kanji) {
     setUserHasInputtedKanjiToGetInfo(false);
     setUserHasInputtedKanjiToGetWords(false);
@@ -121,6 +137,10 @@ export default function Content() {
     readingInfoKeys.includes("reading");
   const readingInfoHasError =
     readingInfoKeys.includes("error") || readingInfoValues.includes(noSuchEndpointNotice);
+  /**
+   * Fetches  kanji characters associated with a specific reading.
+   * @param {string} reading - The reading to fetch kanji characters for.
+   */
   async function getReadingInfo(reading) {
     setUserHasInputtedKanjiToGetInfo(false);
     setUserHasInputtedKanjiToGetWords(false);

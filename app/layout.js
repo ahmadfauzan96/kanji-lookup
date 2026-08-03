@@ -6,6 +6,9 @@ export const metadata = {
   authors: [{ name: "Ahmad Fauzan Bagaskoro", url: "https://github.com/ahmadfauzan96" }],
 };
 
+/**
+ * @param {React.ReactNode} children - The child components to be rendered within the layout.
+ */
 export default function RootLayout({ children }) {
   return (
     <html lang="en" dir="ltr">
