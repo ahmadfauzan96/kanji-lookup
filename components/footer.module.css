@@ -7,24 +7,24 @@
 .footer p {
   margin: 0;
   font-size: 1.25rem;
-  color: #e5d99d;
-  @supports (color: oklch(0% 0 0)) {
-    color: oklch(88.08% 0.07847 98.196);
+  color: #e5d99dff;
+  @supports (color: oklch(0% 0 0 / 0.5)) {
+    color: oklch(88.08% 0.07847 98.196 / 1);
   }
 }
 
 .footer a {
   font-weight: 500;
-  color: #ba9914;
-  @supports (color: oklch(0% 0 0)) {
-    color: oklch(69.322% 0.13769 92.819);
+  color: #ba9914ff;
+  @supports (color: oklch(0% 0 0 / 0.5)) {
+    color: oklch(69.322% 0.13769 92.819 / 1);
   }
   text-decoration: inherit;
 }
 
 .footer a:hover {
-  color: #ab8b09;
-  @supports (color: oklch(0% 0 0)) {
-    color: oklch(64.797% 0.13064 92.151);
+  color: #ab8b09ff;
+  @supports (color: oklch(0% 0 0 / 0.5)) {
+    color: oklch(64.797% 0.13064 92.151 / 1);
   }
 }

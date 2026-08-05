@@ -1,12 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #ffffffff;
+  --foreground: #171717ff;
 
-  @supports (color: oklch(0% 0 0)) {
-    --background: oklch(100% 0.00011 271.152);
-    --foreground: oklch(20.463% 0.00002 271.152);
+  @supports (color: oklch(0% 0 0 / 0.5)) {
+    --background: oklch(100% 0.00011 271.152 / 1);
+    --foreground: oklch(20.463% 0.00002 271.152 / 1);
   }
 }
 
@@ -33,15 +33,15 @@ body {
     rgba(0, 190, 205, 1) 50%,
     rgba(12, 92, 108, 1) 100%
   );
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#06f9ff",endColorstr="#0c5c6c",GradientType=1); /* ! Legacy IE6-9 Filter */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#06f9ffff",endColorstr="#0c5c6cff",GradientType=1); /* ! Legacy IE6-9 Filter */
 
-  @supports (color: oklch(0% 0 0)) {
-    background: oklch(89.147% 0.15125 197.958); /* ! Solid Color Fallback */
+  @supports (color: oklch(0% 0 0 / 0.5)) {
+    background: oklch(89.147% 0.15125 197.958 / 1); /* ! Solid Color Fallback */
     background: linear-gradient(
       in oklch 180deg,
-      oklch(89.147% 0.15125 197.958) 0%,
-      oklch(73.125% 0.12487 204.875) 50%,
-      oklch(43.859% 0.07414 215.817) 100%
+      oklch(89.147% 0.15125 197.958 / 1) 0%,
+      oklch(73.125% 0.12487 204.875 / 1) 50%,
+      oklch(43.859% 0.07414 215.817 / 1) 100%
     );
   }
 }
@@ -77,14 +77,14 @@ a {
   margin: 0px;
   font-weight: 900;
   text-transform: uppercase;
-  color: #262626;
-  /* background: linear-gradient(in oklch 90deg, #f9572a, #ffc905); */
-  @supports (color: oklch(0% 0 0)) {
-    color: oklch(26.862% 0.00003 271.152);
+  color: #262626ff;
+  /* background: linear-gradient(in oklch 90deg, #f9572aff, #ffc905ff); */
+  @supports (color: oklch(0% 0 0 / 0.5)) {
+    color: oklch(26.862% 0.00003 271.152 / 1);
     /* background: linear-gradient(
       in oklch 90deg,
-      oklch(67.008% 0.20566 35.697),
-      oklch(85.946% 0.17497 88.889)
+      oklch(67.008% 0.20566 35.697 / 1),
+      oklch(85.946% 0.17497 88.889 / 1)
     ); */
   }
   -webkit-background-clip: text;
@@ -100,9 +100,9 @@ a {
 .error p {
   font-size: 3rem;
   font-weight: 500;
-  color: #262626;
-  @supports (color: oklch(0% 0 0)) {
-    color: oklch(26.862% 0.00003 271.152);
+  color: #262626ff;
+  @supports (color: oklch(0% 0 0 / 0.5)) {
+    color: oklch(26.862% 0.00003 271.152 / 1);
   }
 }
 
@@ -110,17 +110,17 @@ a {
 .error a {
   font-size: 3rem;
   font-weight: 500;
-  color: #ba9914;
-  @supports (color: oklch(0% 0 0)) {
-    color: oklch(69.322% 0.13769 92.819);
+  color: #ba9914ff;
+  @supports (color: oklch(0% 0 0 / 0.5)) {
+    color: oklch(69.322% 0.13769 92.819 / 1);
   }
   text-decoration: inherit;
 }
 
 .not-found a:hover,
 .error a:hover {
-  color: #ab8b09;
-  @supports (color: oklch(0% 0 0)) {
-    color: oklch(64.797% 0.13064 92.151);
+  color: #ab8b09ff;
+  @supports (color: oklch(0% 0 0 / 0.5)) {
+    color: oklch(64.797% 0.13064 92.151 / 1);
   }
 }

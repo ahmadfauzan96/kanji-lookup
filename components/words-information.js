@@ -17,19 +17,19 @@ export default function WordsInformation({ kanji, wordsInformation }) {
         Word{totalInfo > 1 ? "s" : ""} associated with <span lang="ja">{kanji}</span> ({totalInfo}{" "}
         entr{totalInfo > 1 ? "ies" : "y"})
       </p>
-      <div className="card-body">
-        {Array.isArray(wordsInformation) ? (
+      {Array.isArray(wordsInformation) ? (
+        <div className="card-body">
           <Navbar
             activePage={activePage}
             setActivePage={setActivePage}
             totalInfo={totalInfo}
             list={wordsInformation}
           />
-        ) : (
-          <></>
-        )}
-        <WordInformation activePage={activePage} wordsInformation={wordsInformation} />
-      </div>
+          <WordInformation activePage={activePage} wordsInformation={wordsInformation} />
+        </div>
+      ) : (
+        <></>
+      )}
     </section>
   );
 }

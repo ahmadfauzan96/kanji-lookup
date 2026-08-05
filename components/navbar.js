@@ -3,7 +3,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import paginate from "@/lib/paginater";
 
 /**
- * @param {{activePage: number, setActivePage: Dispatch<SetStateAction<number>>, totalInfo: number, list: T[]}} props
+ * @param {{activePage: number, setActivePage: React.Dispatch<React.SetStateAction<number>>, totalInfo: number, list: T[]}} props
  * @template T
  */
 export default function Navbar({ activePage, setActivePage, totalInfo, list }) {

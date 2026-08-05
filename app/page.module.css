@@ -3,12 +3,12 @@
   --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
   --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
 
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
+  --button-primary-hover: #383838ff;
+  --button-secondary-hover: #f2f2f2ff;
 
-  @supports (color: oklch(0% 0 0)) {
-    --button-primary-hover: oklch(34.07% 0.00004 271.152);
-    --button-secondary-hover: oklch(96.115% 0.00011 271.152);
+  @supports (color: oklch(0% 0 0 / 0.5)) {
+    --button-primary-hover: oklch(34.07% 0.00004 271.152 / 1);
+    --button-secondary-hover: oklch(96.115% 0.00011 271.152 / 1);
   }
 
   display: flex;
