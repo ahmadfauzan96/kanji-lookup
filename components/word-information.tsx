@@ -1,17 +1,23 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import type { JSX } from "react";
 import { addCommaEN, addSemicolonEN } from "@/lib/formatter";
 import paginate from "@/lib/paginater";
+import type { WordInfo, WordMeaning, WordVariant } from "@/lib/types";
 import Ruby from "./ruby";
 
-/** @typedef {import("@/lib/kanji").WordInformation} WordInformation */
-/**
- * @param {{activePage: number, wordsInformation: WordInformation[]}} props
- */
-export default function WordInformation({ activePage, wordsInformation }) {
+interface WordInformationProps {
+  activePage: number;
+  wordsInformation: WordInfo[];
+}
+
+export default function WordInformation({
+  activePage,
+  wordsInformation,
+}: WordInformationProps): JSX.Element {
   return (
     <ul className="list-group list-group-flush">
       {paginate(
-        wordsInformation.map(({ variants, meanings }, index) => (
+        wordsInformation.map<JSX.Element>(({ variants, meanings }: WordInfo, index: number) => (
           <li className="list-group-item" key={index}>
             <ul className="list-group list-group-horizontal-lg d-flex justify-content-center flex-wrap">
               {variants
@@ -20,25 +26,27 @@ export default function WordInformation({ activePage, wordsInformation }) {
                   ({ priorities: prioritiesA }, { priorities: prioritiesB }) =>
                     prioritiesB.length - prioritiesA.length,
                 )
-                .map(({ written, pronounced, priorities }, index) => (
-                  <li className="list-group-item" key={index}>
-                    <p className="flex-lg-row">
-                      <Ruby kanji={written} furigana={pronounced} />
-                    </p>
-                    <p className="flex-lg-row">
-                      Priorit{priorities.length > 1 ? "ies" : "y"} :{" "}
-                      {priorities.length > 0
-                        ? priorities
-                            .sort()
-                            .map(priority => (
-                              <span key={priority}>
-                                {priority + addCommaEN(priorities, priority)}
-                              </span>
-                            ))
-                        : "None"}
-                    </p>
-                  </li>
-                ))}
+                .map<JSX.Element>(
+                  ({ written, pronounced, priorities }: WordVariant, index: number) => (
+                    <li className="list-group-item" key={index}>
+                      <p className="flex-lg-row">
+                        <Ruby kanji={written} furigana={pronounced} />
+                      </p>
+                      <p className="flex-lg-row">
+                        {priorities.length > 1 ? "Priorities" : "Priority"} :{" "}
+                        {priorities.length > 0
+                          ? priorities
+                              .sort()
+                              .map<JSX.Element>((priority: string) => (
+                                <span key={priority}>
+                                  {priority + addCommaEN(priorities, priority)}
+                                </span>
+                              ))
+                          : "None"}
+                      </p>
+                    </li>
+                  ),
+                )}
             </ul>
             <br />
             <br />
@@ -50,9 +58,9 @@ export default function WordInformation({ activePage, wordsInformation }) {
                   const glossB = glossesB.slice().sort()[0];
                   return glossA < glossB ? -1 : glossA > glossB ? 1 : 0;
                 })
-                .map(({ glosses }, index) => (
+                .map<JSX.Element>(({ glosses }: WordMeaning, index: number) => (
                   <li className="list-group-item text-center" key={index}>
-                    {glosses.sort().map(gloss => (
+                    {glosses.sort().map<JSX.Element>((gloss: string) => (
                       <span key={gloss}>{gloss + addSemicolonEN(glosses, gloss)}</span>
                     ))}
                   </li>

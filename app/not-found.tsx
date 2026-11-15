@@ -1,7 +1,8 @@
 import Link from "next/link";
+import type { JSX } from "react";
 import Footer from "@/components/footer";
 
-export default function NotFound() {
+export default function NotFound(): JSX.Element {
   return (
     <div className="not-found">
       <header>

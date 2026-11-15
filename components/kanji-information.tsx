@@ -1,12 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import type { JSX } from "react";
 import { addCommaEN, addCommaJA } from "@/lib/formatter";
 import { theJISX0208KanjiVariant } from "@/lib/the-missing-4-kanji";
+import type { KanjiInfo } from "@/lib/types";
 import Ruby from "./ruby";
 
-/**
- * @param {{kanjiInformation: import("@/lib/kanji").KanjiInformation} props
- */
-export default function KanjiInformation({ kanjiInformation }) {
+interface KanjiInformationProps {
+  kanjiInformation: KanjiInfo;
+}
+
+export default function KanjiInformation({ kanjiInformation }: KanjiInformationProps): JSX.Element {
   const {
     kanji,
     jlpt,
@@ -14,15 +17,16 @@ export default function KanjiInformation({ kanjiInformation }) {
     meanings,
     unicode,
     notes,
-    "kun_readings": kunReadings,
-    "on_readings": onReadings,
-    "name_readings": nameReadings,
-    "heisig_en": heisig,
-    "stroke_count": strokeCount,
-    "freq_mainichi_shinbun": mainichiShinbunFrequencyRank,
-    "unihan_cjk_compatibility_variant": unihanCJKUnifiedVariant,
+    kun_readings: kunReadings,
+    on_readings: onReadings,
+    name_readings: nameReadings,
+    heisig_en: heisig,
+    stroke_count: strokeCount,
+    freq_mainichi_shinbun: mainichiShinbunFrequencyRank,
+    unihan_cjk_compatibility_variant: unihanCJKUnifiedVariant,
   } = kanjiInformation;
-  const kanjiIsOfficialVariantAndMissingFromJISX0208 = heisig !== null && heisig.includes("[alt]");
+  const kanjiIsOfficialVariantAndMissingFromJISX0208: boolean =
+    heisig !== null && heisig.includes("[alt]");
 
   return (
     <section className="card">
@@ -38,7 +42,7 @@ export default function KanjiInformation({ kanjiInformation }) {
             </span>
             ) :{" "}
             {kunReadings.length > 0
-              ? kunReadings.map(reading => (
+              ? kunReadings.map<JSX.Element>((reading: string) => (
                   <span key={reading} lang="ja">
                     {reading + addCommaJA(kunReadings, reading)}
                   </span>
@@ -52,7 +56,7 @@ export default function KanjiInformation({ kanjiInformation }) {
             </span>
             ) :{" "}
             {onReadings.length > 0
-              ? onReadings.map(reading => (
+              ? onReadings.map<JSX.Element>((reading: string) => (
                   <span key={reading} lang="ja">
                     {reading + addCommaJA(onReadings, reading)}
                   </span>
@@ -62,7 +66,7 @@ export default function KanjiInformation({ kanjiInformation }) {
           <li className="list-group-item">
             Name Reading{nameReadings.length > 1 ? "s" : ""} :{" "}
             {nameReadings.length > 0
-              ? nameReadings.map(reading => (
+              ? nameReadings.map<JSX.Element>((reading: string) => (
                   <span key={reading} lang="ja">
                     {reading + addCommaJA(nameReadings, reading)}
                   </span>
@@ -85,7 +89,7 @@ export default function KanjiInformation({ kanjiInformation }) {
           <li className="list-group-item">
             Meaning{meanings.length > 1 ? "s" : ""} in English :{" "}
             {meanings.length > 0
-              ? meanings.map(meaning => (
+              ? meanings.map<JSX.Element>((meaning: string) => (
                   <span key={meaning}>{meaning + addCommaEN(meanings, meaning)}</span>
                 ))
               : "None"}
@@ -142,7 +146,7 @@ export default function KanjiInformation({ kanjiInformation }) {
               )}
               {notes.length > 0 ||
               (notes.length === 0 && kanjiIsOfficialVariantAndMissingFromJISX0208)
-                ? notes.map(note => (
+                ? notes.map<JSX.Element>((note: string) => (
                     <li className="list-group-item" key={note}>
                       {unihanCJKUnifiedVariant
                         ? note.split(".")[0] +

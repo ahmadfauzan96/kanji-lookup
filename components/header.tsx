@@ -1,4 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import type { JSX } from "react";
 import {
   getAllKanji,
   getAllKyouikuKanji,
@@ -21,7 +22,7 @@ import {
 import Ruby from "./ruby";
 import styles from "./header.module.css";
 
-export default async function Header() {
+export default async function Header(): Promise<JSX.Element> {
   const allKanji = await getAllKanji();
   const jouyouKanji = await getJouyouKanji();
   const jinmeiyouKanji = await getJinmeiyouKanji();

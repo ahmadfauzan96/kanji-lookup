@@ -1,17 +1,53 @@
 "use client";
-import { useState } from "react";
+import { type JSX, useState } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import TextField from "@mui/material/TextField";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { getKanjiInformation, getKanjiWithReading, getWordsAssociatedWithKanji } from "@/lib/kanji";
+import type { KanjiInfo, ReadingInfo, WordsInfo } from "@/lib/types";
 import SingleLineCard from "./single-line-card";
 import KanjiInformation from "./kanji-information";
 import WordsInformation from "./words-information";
 import ReadingInformation from "./reading-information";
 import styles from "./content.module.css";
 
-export default function Content() {
+interface EntryInfo {
+  /** The kanji character. */
+  kanji: string;
+  /** The information about the kanji character. */
+  kanjiInfo: KanjiInfo;
+  /** The information about the words associated with the kanji character. */
+  wordsInfo: WordsInfo | [];
+  /** The information about the kanji characters associated with the reading. */
+  readingInfo: ReadingInfo;
+}
+
+const emptyKanjiInfo: KanjiInfo = {
+  freq_mainichi_shinbun: null,
+  grade: null,
+  heisig_en: null,
+  jlpt: null,
+  kanji: "",
+  kun_readings: [],
+  meanings: [],
+  name_readings: [],
+  notes: [],
+  on_readings: [],
+  stroke_count: 0,
+  unicode: "",
+  unihan_cjk_compatibility_variant: undefined,
+  error: undefined,
+};
+
+const emptyReadingInfo: ReadingInfo = {
+  main_kanji: [],
+  name_kanji: [],
+  reading: "",
+  error: undefined,
+};
+
+export default function Content(): JSX.Element {
   // ! using ref management instead of state management created a serious bug
   // * but the codes are kept for reference
   // const enteredTextRef = useRef();
@@ -19,54 +55,29 @@ export default function Content() {
   //   ? enteredTextRef.current.lastChild.firstChild.value
   //   : "";
 
-  const [enteredText, setEnteredText] = useState("");
-  const [userHasInputtedKanjiToGetInfo, setUserHasInputtedKanjiToGetInfo] = useState(false);
-  const [userHasInputtedKanjiToGetWords, setUserHasInputtedKanjiToGetWords] = useState(false);
-  const [userHasInputtedKana, setUserHasInputtedKana] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  /**
-   * @typedef {Object} EntryInfo
-   * @property {string} kanji - The kanji character.
-   * @property {import("@/lib/kanji").KanjiInformation} kanjiInfo - The information about the kanji character.
-   * @property {import("@/lib/kanji").WordsInformation} wordsInfo - The information about the words associated with the kanji character.
-   * @property {import("@/lib/kanji").ReadingInformation} readingInfo - The information about the kanji characters associated with the reading.
-   */
-  /** @type {[EntryInfo, React.Dispatch<React.SetStateAction<EntryInfo>>]} */
-  const [entryInfo, setEntryInfo] = useState({
+  const [enteredText, setEnteredText] = useState<string>("");
+  const [userHasInputtedKanjiToGetInfo, setUserHasInputtedKanjiToGetInfo] =
+    useState<boolean>(false);
+  const [userHasInputtedKanjiToGetWords, setUserHasInputtedKanjiToGetWords] =
+    useState<boolean>(false);
+  const [userHasInputtedKana, setUserHasInputtedKana] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [entryInfo, setEntryInfo] = useState<EntryInfo>({
     kanji: "",
-    kanjiInfo: {},
-    wordsInfo: {},
-    readingInfo: {},
+    kanjiInfo: emptyKanjiInfo,
+    wordsInfo: [],
+    readingInfo: emptyReadingInfo,
   });
 
-  const matches = useMediaQuery("(min-width:932px)");
+  const matches: boolean = useMediaQuery("(min-width:932px)");
 
   const noSuchEndpointNotice = "No such endpoint, see https://kanjiapi.dev/#!/documentation";
 
   // * Kanji Information
-  const kanjiInfoKeys = Object.keys(entryInfo.kanjiInfo);
-  const kanjiInfoValues = Object.values(entryInfo.kanjiInfo);
-  const kanjiInfoHasEntries =
-    kanjiInfoValues.length !== 0 &&
-    kanjiInfoKeys.includes("kanji") &&
-    kanjiInfoKeys.includes("jlpt") &&
-    kanjiInfoKeys.includes("grade") &&
-    kanjiInfoKeys.includes("meanings") &&
-    kanjiInfoKeys.includes("unicode") &&
-    kanjiInfoKeys.includes("notes") &&
-    kanjiInfoKeys.includes("kun_readings") &&
-    kanjiInfoKeys.includes("on_readings") &&
-    kanjiInfoKeys.includes("name_readings") &&
-    kanjiInfoKeys.includes("heisig_en") &&
-    kanjiInfoKeys.includes("stroke_count") &&
-    kanjiInfoKeys.includes("freq_mainichi_shinbun");
-  const kanjiInfoHasError =
-    kanjiInfoKeys.includes("error") || kanjiInfoValues.includes(noSuchEndpointNotice);
-  /**
-   * Fetches information about a specific kanji character.
-   * @param {string} kanji - The kanji character to fetch kanji information for.
-   */
-  async function getKanjiInfo(kanji) {
+  const kanjiInfoHasEntries = entryInfo.kanjiInfo !== emptyKanjiInfo;
+  const kanjiInfoHasError = entryInfo.kanjiInfo.error === noSuchEndpointNotice;
+  async function getKanjiInfo(kanji: string): Promise<void> {
     setUserHasInputtedKanjiToGetInfo(false);
     setUserHasInputtedKanjiToGetWords(false);
     setUserHasInputtedKana(false);
@@ -74,15 +85,18 @@ export default function Content() {
     try {
       const kanjiInformation = await getKanjiInformation(kanji);
       setEntryInfo(prevInfo => {
-        const newInfo = { ...prevInfo };
+        const newInfo: EntryInfo = { ...prevInfo };
         newInfo.kanji = kanjiInformation.kanji ?? "";
-        newInfo.kanjiInfo = kanjiInformation ?? {};
-        newInfo.wordsInfo = {};
-        newInfo.readingInfo = {};
+        newInfo.kanjiInfo = kanjiInformation ?? emptyKanjiInfo;
+        newInfo.wordsInfo = [];
+        newInfo.readingInfo = emptyReadingInfo;
         return newInfo;
       });
     } catch (error) {
-      throw new Error(error.message || "Could not retrieve informations for this kanji.");
+      throw new Error(
+        (error instanceof Error && error.message) ||
+          "Could not retrieve informations for this kanji.",
+      );
     }
     setIsLoading(false);
     setUserHasInputtedKanjiToGetInfo(true);
@@ -98,13 +112,8 @@ export default function Content() {
       // ! will return true if the array is empty, so it must be used together with the check for array length
       word => Object.keys(word).includes("meanings") && Object.keys(word).includes("variants"),
     );
-  const wordsInfoHasError =
-    wordsInfoKeys.includes("error") || wordsInfoValues.includes(noSuchEndpointNotice);
-  /**
-   * Fetches words associated with a specific kanji character.
-   * @param {string} kanji - The kanji character to fetch word information for.
-   */
-  async function getWordsInfo(kanji) {
+  const wordsInfoHasError = wordsInfoKeys.includes("error");
+  async function getWordsInfo(kanji: string): Promise<void> {
     setUserHasInputtedKanjiToGetInfo(false);
     setUserHasInputtedKanjiToGetWords(false);
     setUserHasInputtedKana(false);
@@ -113,35 +122,26 @@ export default function Content() {
       const kanjiInformation = await getKanjiInformation(kanji);
       const wordsInformation = await getWordsAssociatedWithKanji(kanji);
       setEntryInfo(prevInfo => {
-        const newInfo = { ...prevInfo };
+        const newInfo: EntryInfo = { ...prevInfo };
         newInfo.kanji = kanjiInformation.kanji ?? "";
-        newInfo.kanjiInfo = {};
-        newInfo.wordsInfo = wordsInformation ?? {};
-        newInfo.readingInfo = {};
+        newInfo.kanjiInfo = emptyKanjiInfo;
+        newInfo.wordsInfo = wordsInformation ?? [];
+        newInfo.readingInfo = emptyReadingInfo;
         return newInfo;
       });
     } catch (error) {
-      throw new Error(error.message || "Could not retrieve words for this kanji.");
+      throw new Error(
+        (error instanceof Error && error.message) || "Could not retrieve words for this kanji.",
+      );
     }
     setIsLoading(false);
     setUserHasInputtedKanjiToGetWords(true);
   }
 
   // * Reading Information
-  const readingInfoKeys = Object.keys(entryInfo.readingInfo);
-  const readingInfoValues = Object.values(entryInfo.readingInfo);
-  const readingInfoHasEntries =
-    readingInfoValues.length !== 0 &&
-    readingInfoKeys.includes("main_kanji") &&
-    readingInfoKeys.includes("name_kanji") &&
-    readingInfoKeys.includes("reading");
-  const readingInfoHasError =
-    readingInfoKeys.includes("error") || readingInfoValues.includes(noSuchEndpointNotice);
-  /**
-   * Fetches  kanji characters associated with a specific reading.
-   * @param {string} reading - The reading to fetch kanji characters for.
-   */
-  async function getReadingInfo(reading) {
+  const readingInfoHasEntries = entryInfo.readingInfo !== emptyReadingInfo;
+  const readingInfoHasError = entryInfo.readingInfo.error === noSuchEndpointNotice;
+  async function getReadingInfo(reading: string): Promise<void> {
     setUserHasInputtedKanjiToGetInfo(false);
     setUserHasInputtedKanjiToGetWords(false);
     setUserHasInputtedKana(false);
@@ -149,15 +149,17 @@ export default function Content() {
     try {
       const readingInformation = await getKanjiWithReading(reading);
       setEntryInfo(prevInfo => {
-        const newInfo = { ...prevInfo };
+        const newInfo: EntryInfo = { ...prevInfo };
         newInfo.kanji = "";
-        newInfo.kanjiInfo = {};
-        newInfo.wordsInfo = {};
-        newInfo.readingInfo = readingInformation ?? {};
+        newInfo.kanjiInfo = emptyKanjiInfo;
+        newInfo.wordsInfo = [];
+        newInfo.readingInfo = readingInformation ?? emptyReadingInfo;
         return newInfo;
       });
     } catch (error) {
-      throw new Error(error.message || "Could not retrieve kanjis for this reading.");
+      throw new Error(
+        (error instanceof Error && error.message) || "Could not retrieve kanjis for this reading.",
+      );
     }
     setIsLoading(false);
     setUserHasInputtedKana(true);

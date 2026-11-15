@@ -1,24 +1,33 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import type { JSX, Dispatch, SetStateAction } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import paginate from "@/lib/paginater";
 
-/**
- * @param {{activePage: number, setActivePage: React.Dispatch<React.SetStateAction<number>>, totalInfo: number, list: T[]}} props
- * @template T
- */
-export default function Navbar({ activePage, setActivePage, totalInfo, list }) {
-  const matches = useMediaQuery("(min-width:932px)");
+interface NavbarProps<T> {
+  activePage: number;
+  setActivePage: Dispatch<SetStateAction<number>>;
+  totalInfo: number;
+  list: T[];
+}
+
+export default function Navbar<T>({
+  activePage,
+  setActivePage,
+  totalInfo,
+  list,
+}: NavbarProps<T>): JSX.Element {
+  const matches: boolean = useMediaQuery("(min-width:932px)");
   const activePageGroup = matches ? 5 : 3;
 
-  const fastBackward = activePage - activePageGroup;
+  const fastBackward: number = activePage - activePageGroup;
   // * If the fast backward page is below 1, set it to 1
-  const fastBackwardPage = activePage !== 1 ? (fastBackward > 1 ? fastBackward : 1) : 1;
+  const fastBackwardPage: number = activePage !== 1 ? (fastBackward > 1 ? fastBackward : 1) : 1;
   // * If the active page is the first page, disable the fast backward button
   const disabledFastBackwardButtonClass = activePage === 1 ? " disabled" : "";
 
-  const fastForward = activePage + activePageGroup;
+  const fastForward: number = activePage + activePageGroup;
   // * If the fast forward page exceeds the total info, set it to totalInfo
-  const fastForwardPage =
+  const fastForwardPage: number =
     activePage !== totalInfo ? (fastForward < totalInfo ? fastForward : totalInfo) : totalInfo;
   // * If the active page is the last page, disable the fast forward button
   const disabledFastForwardButtonClass = activePage === totalInfo ? " disabled" : "";
@@ -42,7 +51,7 @@ export default function Navbar({ activePage, setActivePage, totalInfo, list }) {
           </button>
         </li>
         {paginate(
-          list.map((_, index) => {
+          list.map<JSX.Element>((_, index) => {
             const pageNumber = index + 1;
             const pageIsActive = pageNumber === activePage;
             return (

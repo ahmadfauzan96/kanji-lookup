@@ -1,21 +1,27 @@
 "use client";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import { type JSX, useState } from "react";
+import type { WordsInfo } from "@/lib/types";
 import Navbar from "./navbar";
 import WordInformation from "./word-information";
 
-/**
- * @param {{kanji: string, wordsInformation: import("@/lib/kanji").WordsInformation}} props
- */
-export default function WordsInformation({ kanji, wordsInformation }) {
-  const [activePage, setActivePage] = useState(1);
-  const totalInfo = Array.isArray(wordsInformation) ? wordsInformation.length : 0;
+interface WordsInformationProps {
+  kanji: string;
+  wordsInformation: WordsInfo | [];
+}
+
+export default function WordsInformation({
+  kanji,
+  wordsInformation,
+}: WordsInformationProps): JSX.Element {
+  const [activePage, setActivePage] = useState<number>(1);
+  const totalInfo: number = Array.isArray(wordsInformation) ? wordsInformation.length : 0;
 
   return (
     <section className="card">
       <p className="card-header">
         Word{totalInfo > 1 ? "s" : ""} associated with <span lang="ja">{kanji}</span> ({totalInfo}{" "}
-        entr{totalInfo > 1 ? "ies" : "y"})
+        {totalInfo > 1 ? "entries" : "entry"})
       </p>
       {Array.isArray(wordsInformation) ? (
         <div className="card-body">

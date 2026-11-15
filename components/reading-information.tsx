@@ -1,19 +1,24 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+import type { JSX } from "react";
 import { addCommaJA } from "@/lib/formatter";
+import type { ReadingInfo } from "@/lib/types";
 
-/**
- * @param {{readingInformation: import("@/lib/kanji").ReadingInformation}} props
- */
-export default function ReadingInformation({ readingInformation }) {
-  const { reading, "main_kanji": mainKanji, "name_kanji": nameKanji } = readingInformation;
-  const mainKanjiLength = mainKanji.length;
-  const nameKanjiLength = nameKanji.length;
-  const totalKanji = mainKanjiLength + nameKanjiLength;
+interface ReadingInformationProps {
+  readingInformation: ReadingInfo;
+}
+
+export default function ReadingInformation({
+  readingInformation,
+}: ReadingInformationProps): JSX.Element {
+  const { reading, main_kanji: mainKanji, name_kanji: nameKanji } = readingInformation;
+  const mainKanjiLength: number = mainKanji.length;
+  const nameKanjiLength: number = nameKanji.length;
+  const totalKanji: number = mainKanjiLength + nameKanjiLength;
 
   return (
     <section className="card">
       <p className="card-header">
-        Kanji{totalKanji > 1 ? "s" : ""} with <span lang="ja">{reading}</span> Reading{" "}
+        Kanji with <span lang="ja">{reading}</span> Reading{" "}
         <span lang="ja">「{totalKanji}字」</span>
       </p>
       <div className="card-body">
@@ -22,7 +27,7 @@ export default function ReadingInformation({ readingInformation }) {
             As Main Reading :{" "}
             {mainKanjiLength > 0 ? (
               <>
-                {mainKanji.map(kanji => (
+                {mainKanji.map<JSX.Element>((kanji: string) => (
                   <span key={kanji} lang="ja">
                     {kanji + addCommaJA(mainKanji, kanji)}
                   </span>
@@ -37,7 +42,7 @@ export default function ReadingInformation({ readingInformation }) {
             As Name Reading :{" "}
             {nameKanjiLength > 0 ? (
               <>
-                {nameKanji.map(kanji => (
+                {nameKanji.map<JSX.Element>((kanji: string) => (
                   <span key={kanji} lang="ja">
                     {kanji + addCommaJA(nameKanji, kanji)}
                   </span>

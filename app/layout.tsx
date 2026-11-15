@@ -1,3 +1,4 @@
+import type { JSX, ReactNode } from "react";
 import "./globals.css";
 
 export const metadata = {
@@ -6,12 +7,13 @@ export const metadata = {
   authors: [{ name: "Ahmad Fauzan Bagaskoro", url: "https://github.com/ahmadfauzan96" }],
 };
 
-/**
- * @param {React.ReactNode} children - The child components to be rendered within the layout.
- */
-export default function RootLayout({ children }) {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps): JSX.Element {
   return (
-    <html lang="en" dir="ltr">
+    <html lang="en" dir="ltr" suppressHydrationWarning={true}>
       <body>{children}</body>
     </html>
   );

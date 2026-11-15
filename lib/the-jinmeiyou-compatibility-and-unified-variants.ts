@@ -1,6 +1,8 @@
+import { Jinmeiyou57 } from "./types";
+
 // ? The following kanji are Jinmeiyō Kanji which are included in the CJK Compatibility Ideographs Unicode Block
 // * paired with their CJK Unified variants.
-const the57JinmeiyouKanji = [
+const the57JinmeiyouKanji: Jinmeiyou57[] = [
   { compat: "欄", unified: "欄" },
   { compat: "廊", unified: "廊" },
   { compat: "朗", unified: "朗" },
@@ -62,8 +64,8 @@ const the57JinmeiyouKanji = [
 
 /**
  * Retrieves the unified variant of a Jinmeiyō kanji (人名用漢字).
- * @param {string} kanji The compatibility variant of kanji.
- * @returns {string|undefined} The unified variant of kanji, if any.
+ * @param kanji The compatibility variant of kanji.
+ * @return The unified variant of kanji, if any.
  */
-export const theJinmeiyouUnifiedVariant = kanji =>
+export const theJinmeiyouUnifiedVariant = (kanji: string): string | undefined =>
   the57JinmeiyouKanji.find(({ compat }) => kanji === compat)?.unified;
